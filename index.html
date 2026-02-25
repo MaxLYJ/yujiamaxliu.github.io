@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- Meta info — NOT visible on the page, but important -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="John's personal portfolio website" />
+
+    <!-- The title shown on the browser tab -->
+    <title>John | Portfolio</title>
+
+    <!-- Link to your CSS file (we create this later) -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+    <!-- ============ NAVIGATION BAR ============ -->
+    <nav>
+      <ul>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- ============ HERO SECTION ============ -->
+    <!-- This is the big banner people see first -->
+    <section id="hero">
+      <h1>Hi, I'm John 👋</h1>
+      <p>Welcome to my personal portfolio.</p>
+    </section>
+
+    <!-- ============ ABOUT SECTION ============ -->
+    <section id="about">
+      <h2>About Me</h2>
+      <img src="./images/profile.jpg" alt="My profile photo" />
+      <p>Write a short paragraph about yourself here.</p>
+    </section>
+
+    <!-- ============ PROJECTS SECTION ============ -->
+    <section id="projects">
+      <h2>My Projects</h2>
+
+      <!-- One card per project -->
+      <div class="project-card">
+        <h3>Project Name</h3>
+        <p>Short description of what this project does.</p>
+        <a href="https://github.com/yourusername" target="_blank">View on GitHub</a>
+      </div>
+
+    </section>
+
+    <!-- ============ VIDEO SECTION ============ -->
+    <section id="video">
+      <h2>Featured Video</h2>
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+        title="YouTube video player"
+        frameborder="0"
+        allowfullscreen>
+      </iframe>
+    </section>
+
+    <!-- ============ CONTACT SECTION ============ -->
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <p>Email: <a href="mailto:you@email.com">you@email.com</a></p>
+      <p>GitHub: <a href="https://github.com/yourusername" target="_blank">github.com/yourusername</a></p>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+      <p>© 2025 John. All rights reserved.</p>
+    </footer>
+
+    <!-- Link to your JavaScript file (we create this later) -->
+    <script src="script.js"></script>
+
+  </body>
+
+</html>
