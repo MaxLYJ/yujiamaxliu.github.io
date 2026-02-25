@@ -400,6 +400,7 @@ h2 {
     width: min(78vw, 290px);
     transform: translateX(-100%);
     box-shadow: none;
+    padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   .sidebar:hover,
@@ -421,6 +422,10 @@ h2 {
     opacity: 1;
     max-width: 180px;
     transform: none;
+  }
+
+  .sidebar-share {
+    margin-bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px));
   }
 
   .sidebar.is-open {
