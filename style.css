@@ -275,6 +275,12 @@ h2 {
   color: var(--muted);
 }
 
+.about img {
+  border-radius: 14px;
+  align-items: center;
+
+}
+
 .hero-actions {
   margin-top: 1rem;
   display: flex;
@@ -425,7 +431,10 @@ h2 {
   }
 
   .sidebar-share {
-    margin-bottom: calc(1.2rem + env(safe-area-inset-bottom, 0px));
+    /* Mobile browsers show a bottom URL bar. */
+    /* It can cover the share links. */
+    /* Move this block up by 3rem to keep links visible. */
+    margin-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
   }
 
   .sidebar.is-open {
