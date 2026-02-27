@@ -63,3 +63,183 @@ if (menuToggle && sidebar && overlay) {
     }
   });
 }
+
+const featuredPages = [
+  {
+    folder: "fr-division-2",
+    slug: "division-2",
+    title: "Division 2",
+    description: "Tom Clancy's The Division 2 featured recommendation set.",
+    targetUrl: "division-2.html",
+    altMain: "Division 2 main featured image",
+    altThumbs: ["Division 2 thumbnail 1", "Division 2 thumbnail 2", "Division 2 thumbnail 3", "Division 2 thumbnail 4"]
+  },
+  {
+    folder: "fr-farcry-6",
+    slug: "farcry-6",
+    title: "Farcry 6",
+    description: "Featured moments and recommendation snapshots for Farcry 6.",
+    targetUrl: "farcry-6.html",
+    altMain: "Farcry 6 main featured image",
+    altThumbs: ["Farcry 6 thumbnail 1", "Farcry 6 thumbnail 2", "Farcry 6 thumbnail 3", "Farcry 6 thumbnail 4"]
+  },
+  {
+    folder: "fr-d-walker-vs-sahelanthropus",
+    slug: "d-walker-vs-sahelanthropus",
+    title: "D-Walker VS Sahelanthropus",
+    description: "A tactical encounter highlight: D-Walker VS Sahelanthropus.",
+    targetUrl: "d-walker-vs-sahelanthropus.html",
+    altMain: "D-Walker VS Sahelanthropus main featured image",
+    altThumbs: [
+      "D-Walker VS Sahelanthropus thumbnail 1",
+      "D-Walker VS Sahelanthropus thumbnail 2",
+      "D-Walker VS Sahelanthropus thumbnail 3",
+      "D-Walker VS Sahelanthropus thumbnail 4"
+    ]
+  },
+  {
+    folder: "fr-raiden-vs-gekko",
+    slug: "raiden-vs-gekko",
+    title: "Raiden VS Gekko",
+    description: "Metal Gear Rising sequence recommendation: Raiden VS Gekko.",
+    targetUrl: "raiden-vs-gekko.html",
+    altMain: "Raiden VS Gekko main featured image",
+    altThumbs: ["Raiden VS Gekko thumbnail 1", "Raiden VS Gekko thumbnail 2", "Raiden VS Gekko thumbnail 3", "Raiden VS Gekko thumbnail 4"]
+  }
+];
+
+const frSection = document.getElementById("featured-recommendations");
+if (frSection) {
+  const frCardLink = document.getElementById("fr-card-link");
+  const frMainImage = document.getElementById("fr-main-image");
+  const frThumbs = document.getElementById("fr-thumbs");
+  const frTitle = document.getElementById("fr-title");
+  const frDescription = document.getElementById("fr-description");
+  const frWarning = document.getElementById("fr-warning");
+  const frWarningList = document.getElementById("fr-warning-list");
+  const prevBtn = frSection.querySelector(".fr-nav-prev");
+  const nextBtn = frSection.querySelector(".fr-nav-next");
+
+  const basePath = "Resources/Featured Recommendations/pages";
+  let currentPageIndex = 0;
+
+  function buildImagePath(page, role) {
+    return `${basePath}/${page.folder}/fr_${page.slug}__${role}.svg`;
+  }
+
+  function validatePage(page) {
+    const issues = [];
+    if (!/^fr-[a-z0-9-]+$/.test(page.folder)) {
+      issues.push(`Invalid folder name: ${page.folder}`);
+    }
+
+    if (!page.folder.endsWith(page.slug)) {
+      issues.push(`Folder and slug mismatch: ${page.folder} vs ${page.slug}`);
+    }
+
+    return issues;
+  }
+
+  function clearWarning() {
+    frSection.classList.remove("has-warning");
+    frWarning.hidden = true;
+    frWarningList.innerHTML = "";
+  }
+
+  function applyWarning(issues, page) {
+    if (!issues.length) {
+      clearWarning();
+      return;
+    }
+
+    frSection.classList.add("has-warning");
+    frWarning.hidden = false;
+    frWarningList.innerHTML = issues.map((issue) => `<li>${issue}</li>`).join("");
+    console.warn("Featured Recommendation naming issues", {
+      pageSlug: page.slug,
+      issues
+    });
+  }
+
+  function setActiveThumb(activeButton) {
+    frThumbs.querySelectorAll(".fr-thumb").forEach((button) => {
+      button.classList.toggle("is-active", button === activeButton);
+    });
+  }
+
+  function renderPage() {
+    const page = featuredPages[currentPageIndex];
+    const mainImage = buildImagePath(page, "main");
+    frCardLink.href = page.targetUrl;
+    frTitle.textContent = page.title;
+    frDescription.textContent = page.description;
+    frMainImage.src = mainImage;
+    frMainImage.alt = page.altMain;
+
+    frThumbs.innerHTML = "";
+    for (let i = 1; i <= 4; i += 1) {
+      const index = String(i).padStart(2, "0");
+      const thumbPath = buildImagePath(page, `thumb_${index}`);
+      const thumbButton = document.createElement("button");
+      thumbButton.className = "fr-thumb";
+      thumbButton.type = "button";
+      thumbButton.setAttribute("aria-label", `Preview ${page.title} image ${i}`);
+
+      const thumbImage = document.createElement("img");
+      thumbImage.src = thumbPath;
+      thumbImage.alt = page.altThumbs[i - 1] || `${page.title} thumbnail ${i}`;
+      thumbButton.appendChild(thumbImage);
+
+      const activateThumb = () => {
+        frMainImage.src = thumbPath;
+        frMainImage.alt = thumbImage.alt;
+        setActiveThumb(thumbButton);
+      };
+
+      thumbButton.addEventListener("mouseenter", activateThumb);
+      thumbButton.addEventListener("focus", activateThumb);
+      thumbButton.addEventListener("click", (event) => {
+        event.preventDefault();
+        activateThumb();
+      });
+      thumbButton.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activateThumb();
+        }
+      });
+
+      thumbButton.addEventListener("mouseleave", () => {
+        frMainImage.src = mainImage;
+        frMainImage.alt = page.altMain;
+        setActiveThumb(null);
+      });
+      thumbButton.addEventListener("blur", () => {
+        frMainImage.src = mainImage;
+        frMainImage.alt = page.altMain;
+        setActiveThumb(null);
+      });
+
+      frThumbs.appendChild(thumbButton);
+    }
+
+    applyWarning(validatePage(page), page);
+  }
+
+  function movePage(direction) {
+    currentPageIndex = (currentPageIndex + direction + featuredPages.length) % featuredPages.length;
+    renderPage();
+  }
+
+  [prevBtn, nextBtn].forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  });
+
+  prevBtn.addEventListener("click", () => movePage(-1));
+  nextBtn.addEventListener("click", () => movePage(1));
+
+  renderPage();
+}
