@@ -68,6 +68,8 @@ When implementing or updating the homepage Recommendation section:
 - Mobile layout must place left/right buttons on the same row above the page indicator.
 - Include a bottom page indicator made of dots; highlight the active page dot.
 - Sidebar must keep `Recommendation` as the top navigation item for this section anchor.
+- Main image frame and all 4 thumbnail frames must be fixed to 16:9.
+- Images must fill frames with cover behavior (no stretching).
 - Thumbnail hover/focus should preview in the main image.
 - Thumbnail click should navigate to the current page target URL.
 - Arrow button clicks must not trigger content link navigation.

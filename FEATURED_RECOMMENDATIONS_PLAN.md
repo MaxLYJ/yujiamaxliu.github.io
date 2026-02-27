@@ -87,6 +87,8 @@ If metadata file is missing, use fallback title/description from slug.
   - **Right:** 2x2 grid of four small images.
 - Description block under the four small images.
 - Page indicator row at the bottom using dots; active page dot is highlighted.
+- Main image frame and all 4 thumbnail frames use a fixed 16:9 ratio.
+- Images must fill the frame using cover behavior (no stretching).
 
 ### Visual parity with references
 - Match spacing, border radius, and card treatment with existing site style.
@@ -204,6 +206,7 @@ For each page folder:
 - [ ] Section appears near top of homepage.
 - [ ] Left/right buttons switch pages correctly and visually span the section height.
 - [ ] Layout is exactly 1 large image left + 4 small images right + description below.
+- [ ] Main image + all thumbnails render in 16:9 frames with no stretching.
 - [ ] Hovering any small image updates large image.
 - [ ] Clicking a thumbnail opens linked content page.
 - [ ] Clicking section opens linked content page.
