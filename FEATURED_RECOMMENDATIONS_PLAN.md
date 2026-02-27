@@ -79,11 +79,12 @@ If metadata file is missing, use fallback title/description from slug.
 
 ### Container structure
 - Outer clickable container (`<a>` wrapping the content) to satisfy "click anywhere goes to another page".
-- Left and right nav buttons fixed at side edges of the section.
+- Left and right nav buttons fixed at side edges of the section and stretched from top to bottom of the card area.
 - Content area split into two columns:
   - **Left:** one large image preview.
   - **Right:** 2x2 grid of four small images.
 - Description block under the four small images.
+- Page indicator row at the bottom using dots; active page dot is highlighted.
 
 ### Visual parity with references
 - Match spacing, border radius, and card treatment with existing site style.
@@ -112,6 +113,7 @@ If metadata file is missing, use fallback title/description from slug.
 - Clicking anywhere in the main section content opens current page `targetUrl`.
 - Navigation arrows should not trigger link navigation:
   - use `event.stopPropagation()` / `preventDefault()` as needed.
+- Clicking a thumbnail should both preview and navigate to the current page `targetUrl`.
 
 ### D. Accessibility requirements
 - Buttons must be keyboard focusable and have aria labels.
@@ -196,11 +198,13 @@ For each page folder:
 
 ## 8) QA Checklist
 - [ ] Section appears near top of homepage.
-- [ ] Left/right buttons switch pages correctly.
+- [ ] Left/right buttons switch pages correctly and visually span the section height.
 - [ ] Layout is exactly 1 large image left + 4 small images right + description below.
 - [ ] Hovering any small image updates large image.
+- [ ] Clicking a thumbnail opens linked content page.
 - [ ] Clicking section opens linked content page.
 - [ ] Arrow clicks do not accidentally open content link.
+- [ ] Dot indicator count matches page count and active dot updates per page.
 - [ ] `template-content.html` follows existing site format.
 - [ ] Works on desktop and mobile sizes.
 - [ ] Keyboard navigation/focus states are functional.

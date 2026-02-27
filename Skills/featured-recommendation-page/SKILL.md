@@ -59,3 +59,12 @@ For each page folder, verify:
 If authoring intentionally includes malformed names for testing warning UI:
 - Keep images present so fallback rendering can still display content.
 - Document expected warning text for each malformed file in PR notes.
+
+
+## Interaction expectations for this repo
+When implementing or updating the homepage Featured & Recommendation section:
+- Keep left/right navigation controls stretched vertically to the full section height on desktop layouts.
+- Include a bottom page indicator made of dots; highlight the active page dot.
+- Thumbnail hover/focus should preview in the main image.
+- Thumbnail click should navigate to the current page target URL.
+- Arrow button clicks must not trigger content link navigation.

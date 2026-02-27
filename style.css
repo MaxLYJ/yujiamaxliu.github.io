@@ -237,7 +237,7 @@ main,
   padding: clamp(1rem, 2.5vw, 1.4rem);
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: center;
+  align-items: stretch;
   gap: 0.8rem;
 }
 
@@ -247,6 +247,7 @@ main,
   gap: 1rem;
   text-decoration: none;
   min-width: 0;
+  align-self: stretch;
 }
 
 .fr-media-main img {
@@ -306,18 +307,44 @@ main,
 }
 
 .fr-nav {
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
+  width: 44px;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 12px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.05);
   color: var(--text);
   cursor: pointer;
+  font-size: 1.1rem;
 }
 
 .fr-nav:hover,
 .fr-nav:focus-visible {
   border-color: var(--accent);
+}
+
+
+
+.fr-page-indicator {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 0.2rem;
+}
+
+.fr-indicator-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.fr-indicator-dot.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(120, 168, 255, 0.2);
 }
 
 .featured-recommendations.has-warning {
@@ -591,6 +618,7 @@ h2 {
 
   .fr-nav {
     width: 100%;
+    min-height: 42px;
     border-radius: 10px;
   }
 }

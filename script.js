@@ -117,6 +117,7 @@ if (frSection) {
   const frDescription = document.getElementById("fr-description");
   const frWarning = document.getElementById("fr-warning");
   const frWarningList = document.getElementById("fr-warning-list");
+  const pageIndicator = document.getElementById("fr-page-indicator");
   const prevBtn = frSection.querySelector(".fr-nav-prev");
   const nextBtn = frSection.querySelector(".fr-nav-next");
 
@@ -167,6 +168,21 @@ if (frSection) {
     });
   }
 
+  function renderIndicator() {
+    if (!pageIndicator) {
+      return;
+    }
+
+    pageIndicator.innerHTML = "";
+    featuredPages.forEach((_, index) => {
+      const dot = document.createElement("span");
+      dot.className = "fr-indicator-dot";
+      dot.setAttribute("aria-hidden", "true");
+      dot.classList.toggle("is-active", index === currentPageIndex);
+      pageIndicator.appendChild(dot);
+    });
+  }
+
   function renderPage() {
     const page = featuredPages[currentPageIndex];
     const mainImage = buildImagePath(page, "main");
@@ -198,9 +214,9 @@ if (frSection) {
 
       thumbButton.addEventListener("mouseenter", activateThumb);
       thumbButton.addEventListener("focus", activateThumb);
-      thumbButton.addEventListener("click", (event) => {
-        event.preventDefault();
+      thumbButton.addEventListener("click", () => {
         activateThumb();
+        window.location.href = page.targetUrl;
       });
       thumbButton.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
@@ -224,6 +240,7 @@ if (frSection) {
     }
 
     applyWarning(validatePage(page), page);
+    renderIndicator();
   }
 
   function movePage(direction) {
