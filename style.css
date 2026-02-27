@@ -613,7 +613,35 @@ h2 {
 
 @media (max-width: 760px) {
   .featured-recommendations {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fr-card,
+  .fr-page-indicator,
+  .fr-warning {
+    grid-column: 1 / -1;
+  }
+
+  .fr-card {
+    grid-row: 1;
+  }
+
+  .fr-nav-prev {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .fr-nav-next {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .fr-page-indicator {
+    grid-row: 3;
+  }
+
+  .fr-warning {
+    grid-row: 4;
   }
 
   .fr-nav {
