@@ -472,3 +472,137 @@ if (frSection) {
 
   renderPage();
 }
+
+const projectTemplateMain = document.querySelector("[data-project-template-folder][data-project-template-slug]");
+const projectGallery = document.querySelector("[data-project-gallery]");
+if (projectTemplateMain) {
+  const folder = projectTemplateMain.dataset.projectTemplateFolder;
+  const slug = projectTemplateMain.dataset.projectTemplateSlug;
+  const basePath = "Resources/Project Template/pages";
+  const imagePathCache = new Map();
+
+  function buildProjectImagePath(role, extension) {
+    return `${basePath}/${folder}/pt_${slug}__${role}.${extension}`;
+  }
+
+  function canLoadProjectImage(src) {
+    return new Promise((resolve) => {
+      const image = new Image();
+      image.onload = () => resolve(true);
+      image.onerror = () => resolve(false);
+      image.src = src;
+    });
+  }
+
+  async function resolveProjectImagePath(role) {
+    const cacheKey = `${slug}:${role}`;
+    if (imagePathCache.has(cacheKey)) {
+      return imagePathCache.get(cacheKey);
+    }
+
+    for (const extension of RECOMMENDATION_IMAGE_EXTENSION_PRIORITY) {
+      const candidatePath = buildProjectImagePath(role, extension);
+      // eslint-disable-next-line no-await-in-loop
+      const valid = await canLoadProjectImage(candidatePath);
+      if (valid) {
+        imagePathCache.set(cacheKey, candidatePath);
+        return candidatePath;
+      }
+    }
+
+    const fallbackPath = buildProjectImagePath(role, "svg");
+    imagePathCache.set(cacheKey, fallbackPath);
+    return fallbackPath;
+  }
+
+  async function hydrateProjectTemplateImages() {
+    const nodes = Array.from(projectTemplateMain.querySelectorAll("[data-project-role]"));
+    await Promise.all(
+      nodes.map(async (node) => {
+        const role = node.dataset.projectRole;
+        if (!role) {
+          return;
+        }
+
+        const imagePath = await resolveProjectImagePath(role);
+        if (node.tagName === "IMG") {
+          node.src = imagePath;
+        }
+
+        if (node.classList.contains("project-thumb")) {
+          node.dataset.gallerySrc = imagePath;
+        }
+      })
+    );
+  }
+
+  hydrateProjectTemplateImages().then(() => {
+    if (!projectGallery) {
+      return;
+    }
+
+    const mainImage = projectGallery.querySelector("[data-project-gallery-main]");
+    const thumbs = Array.from(projectGallery.querySelectorAll(".project-thumb"));
+    let activeIndex = Math.max(
+      0,
+      thumbs.findIndex((thumb) => thumb.classList.contains("is-active"))
+    );
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function renderProjectGallery(index) {
+      const boundedIndex = (index + thumbs.length) % thumbs.length;
+      const activeThumb = thumbs[boundedIndex];
+      if (!activeThumb || !mainImage) {
+        return;
+      }
+
+      activeIndex = boundedIndex;
+      mainImage.src = activeThumb.dataset.gallerySrc || mainImage.src;
+      mainImage.alt = activeThumb.dataset.galleryAlt || mainImage.alt;
+
+      thumbs.forEach((thumb, thumbIndex) => {
+        thumb.classList.toggle("is-active", thumbIndex === activeIndex);
+      });
+
+      activeThumb.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    }
+
+    thumbs.forEach((thumb, index) => {
+      thumb.addEventListener("click", () => renderProjectGallery(index));
+    });
+
+    function onSwipe() {
+      const distance = touchEndX - touchStartX;
+      if (Math.abs(distance) < 40) {
+        return;
+      }
+
+      if (distance < 0) {
+        renderProjectGallery(activeIndex + 1);
+        return;
+      }
+
+      renderProjectGallery(activeIndex - 1);
+    }
+
+    projectGallery.addEventListener(
+      "touchstart",
+      (event) => {
+        touchStartX = event.changedTouches[0].clientX;
+      },
+      { passive: true }
+    );
+
+    projectGallery.addEventListener(
+      "touchend",
+      (event) => {
+        touchEndX = event.changedTouches[0].clientX;
+        onSwipe();
+      },
+      { passive: true }
+    );
+
+    renderProjectGallery(activeIndex);
+  });
+}
