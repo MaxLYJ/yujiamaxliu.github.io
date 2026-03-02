@@ -472,3 +472,70 @@ if (frSection) {
 
   renderPage();
 }
+
+const projectGallery = document.querySelector("[data-project-gallery]");
+if (projectGallery) {
+  const mainImage = projectGallery.querySelector("[data-project-gallery-main]");
+  const thumbs = Array.from(projectGallery.querySelectorAll(".project-thumb"));
+  let activeIndex = Math.max(
+    0,
+    thumbs.findIndex((thumb) => thumb.classList.contains("is-active"))
+  );
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  function renderProjectGallery(index) {
+    const boundedIndex = (index + thumbs.length) % thumbs.length;
+    const activeThumb = thumbs[boundedIndex];
+    if (!activeThumb || !mainImage) {
+      return;
+    }
+
+    activeIndex = boundedIndex;
+    mainImage.src = activeThumb.dataset.gallerySrc || mainImage.src;
+    mainImage.alt = activeThumb.dataset.galleryAlt || mainImage.alt;
+
+    thumbs.forEach((thumb, thumbIndex) => {
+      thumb.classList.toggle("is-active", thumbIndex === activeIndex);
+    });
+
+    activeThumb.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+  }
+
+  thumbs.forEach((thumb, index) => {
+    thumb.addEventListener("click", () => renderProjectGallery(index));
+  });
+
+  function onSwipe() {
+    const distance = touchEndX - touchStartX;
+    if (Math.abs(distance) < 40) {
+      return;
+    }
+
+    if (distance < 0) {
+      renderProjectGallery(activeIndex + 1);
+      return;
+    }
+
+    renderProjectGallery(activeIndex - 1);
+  }
+
+  projectGallery.addEventListener(
+    "touchstart",
+    (event) => {
+      touchStartX = event.changedTouches[0].clientX;
+    },
+    { passive: true }
+  );
+
+  projectGallery.addEventListener(
+    "touchend",
+    (event) => {
+      touchEndX = event.changedTouches[0].clientX;
+      onSwipe();
+    },
+    { passive: true }
+  );
+
+  renderProjectGallery(activeIndex);
+}
