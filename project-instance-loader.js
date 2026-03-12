@@ -1,53 +1,213 @@
-const PROJECT_INSTANCE_MANIFEST = {
-  "project-instance-test": {
-    title: "[Project Name Placeholder]",
-    kicker: "Project Template Instance",
-    description:
-      "This is a test instance generated from the shared template. Replace this text with project-specific summary when content is ready.",
-    tools: "[Tool A], [Tool B]",
-    languages: "[Language A], [Language B]",
-    time: "[Timeline Placeholder]",
-    role: "[Role Placeholder]",
-    tags: ["[Tag 1]", "[Tag 2]", "[Tag 3]"],
-    images: {
-      cover:
-        "Resources/Project Template/pages/pt-template-project/pt_template-project__cover.svg",
-      thumb_01:
-        "Resources/Project Template/pages/pt-template-project/pt_template-project__thumb_01.svg",
-      thumb_02:
-        "Resources/Project Template/pages/pt-template-project/pt_template-project__thumb_02.svg",
-      thumb_03:
-        "Resources/Project Template/pages/pt-template-project/pt_template-project__thumb_03.svg",
-      thumb_04:
-        "Resources/Project Template/pages/pt-template-project/pt_template-project__thumb_04.svg"
-    }
-  }
+// Slug-to-config mapping. Each JSON file contains one project instance's content.
+const PROJECT_INSTANCE_CONFIG_PATHS = {
+  "project-instance-test":
+    "Resources/Project Instances/config/project-instance-test.json",
+  "raiden-vs-gekko": "Resources/Project Instances/config/raiden-vs-gekko.json",
+  "division2-tools": "Resources/Project Instances/config/division2-tools.json",
+  "d-walker-vs-sahelanthropus": "Resources/Project Instances/config/d-walker-vs-sahelanthropus.json",
+  "farcry6-procedural-generation": "Resources/Project Instances/config/Farcry6-ProceduralGeneration.json"
 };
 
-async function loadProjectInstanceTemplate() {
-  const root = document.querySelector("[data-project-instance-root]");
-  const slug = document.body.dataset.projectSlug;
+async function loadProjectConfig(slug) {
+  const configPath = PROJECT_INSTANCE_CONFIG_PATHS[slug];
+  if (!configPath) {
+    return null;
+  }
 
-  if (!root || !slug || !PROJECT_INSTANCE_MANIFEST[slug]) {
+  try {
+    const response = await fetch(configPath);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
+function toEmbedVideoUrl(url) {
+  if (!url) return "";
+  if (url.includes("youtube.com/embed/")) return url;
+
+  try {
+    const parsed = new URL(url, window.location.origin);
+    const host = parsed.hostname.replace(/^www\./, "");
+
+    if (host === "youtube.com" || host === "m.youtube.com") {
+      const videoId = parsed.searchParams.get("v");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    if (host === "youtu.be") {
+      const videoId = parsed.pathname.replace(/^\//, "");
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+function createDetailBlockElement(block, fallbackTitle) {
+  if (!block || typeof block !== "object") {
+    return null;
+  }
+
+  const type = String(block.type || "").toLowerCase();
+  if (type === "h1" || type === "h2" || type === "h3" || type === "p") {
+    const textNode = document.createElement(type);
+    textNode.textContent = block.text || "";
+    return textNode;
+  }
+
+  if (type === "image") {
+    if (!block.src) return null;
+    const image = document.createElement("img");
+    image.src = block.src;
+    image.alt = block.alt || `${fallbackTitle} project detail image`;
+    image.className = "project-details-image";
+    return image;
+  }
+
+  if (type === "video") {
+    if (!block.url) return null;
+    const frame = document.createElement("div");
+    frame.className = "project-details-video-frame";
+    const iframe = document.createElement("iframe");
+    iframe.src = toEmbedVideoUrl(block.url);
+    iframe.title = block.title || `${fallbackTitle} project detail video`;
+    iframe.loading = "lazy";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.allowFullscreen = true;
+    frame.appendChild(iframe);
+    return frame;
+  }
+
+  return null;
+}
+
+function renderProjectDetails(detailsContainer, config) {
+  if (!detailsContainer) {
     return;
   }
 
+  detailsContainer.innerHTML = "";
+
+  const blocks = config.projectDetails?.blocks;
+  if (Array.isArray(blocks) && blocks.length > 0) {
+    blocks.forEach((block) => {
+      const node = createDetailBlockElement(block, config.title);
+      if (node) {
+        node.classList.add("project-details-block");
+        detailsContainer.appendChild(node);
+      }
+    });
+    return;
+  }
+
+  // Backward compatibility for existing projectDetails shape.
+  if (config.projectDetails?.initiative) {
+    const heading = document.createElement("h3");
+    heading.textContent = "Initiative";
+    const paragraph = document.createElement("p");
+    paragraph.textContent = config.projectDetails.initiative;
+    heading.className = "project-details-block";
+    paragraph.className = "project-details-block";
+    detailsContainer.append(heading, paragraph);
+  }
+
+  if (config.projectDetails?.pipeline) {
+    const heading = document.createElement("h3");
+    heading.textContent = "Research Pipeline";
+    const paragraph = document.createElement("p");
+    paragraph.textContent = config.projectDetails.pipeline;
+    heading.className = "project-details-block";
+    paragraph.className = "project-details-block";
+    detailsContainer.append(heading, paragraph);
+  }
+
+  if (config.projectDetails?.result) {
+    const heading = document.createElement("h3");
+    heading.textContent = "Research Result";
+    const paragraph = document.createElement("p");
+    paragraph.textContent = config.projectDetails.result;
+    heading.className = "project-details-block";
+    paragraph.className = "project-details-block";
+    detailsContainer.append(heading, paragraph);
+  }
+
+  if (config.projectDetails?.placeholderImage) {
+    const imageNode = createDetailBlockElement(
+      {
+        type: "image",
+        src: config.projectDetails.placeholderImage,
+        alt: `${config.title} project details image`
+      },
+      config.title
+    );
+    if (imageNode) {
+      imageNode.classList.add("project-details-block");
+      detailsContainer.appendChild(imageNode);
+    }
+  }
+
+  if (config.projectDetails?.placeholderVideo) {
+    const videoNode = createDetailBlockElement(
+      {
+        type: "video",
+        url: config.projectDetails.placeholderVideo,
+        title: `${config.title} project details video`
+      },
+      config.title
+    );
+    if (videoNode) {
+      videoNode.classList.add("project-details-block");
+      detailsContainer.appendChild(videoNode);
+    }
+  }
+}
+
+async function loadProjectInstanceTemplate() {
+  // The host page provides where to mount and which manifest entry to use.
+  const root = document.querySelector("[data-project-instance-root]");
+  const slug = document.body.dataset.projectSlug;
+
+  // Abort when required runtime context is missing.
+  if (!root || !slug) {
+    return;
+  }
+
+  const config = await loadProjectConfig(slug);
+  if (!config) {
+    return;
+  }
+
+  // Load the shared template markup, then parse it into a detached DOM tree.
   const response = await fetch("template-content.html");
   const html = await response.text();
   const parsed = new DOMParser().parseFromString(html, "text/html");
-  const config = PROJECT_INSTANCE_MANIFEST[slug];
 
+  // Grab the template sections that are injected into the live page.
   const header = parsed.querySelector("header.top-bar");
   const overlay = parsed.querySelector(".sidebar-overlay");
   const sidebar = parsed.querySelector("nav.sidebar");
   const main = parsed.querySelector("main.project-template-main");
 
+  // Guard against malformed template files.
   if (!header || !overlay || !sidebar || !main) {
     return;
   }
 
   document.title = `${config.title} | Yujia Max Liu`;
 
+  // Map manifest fields to primary content placeholders.
   const kicker = main.querySelector(".project-kicker");
   const title = main.querySelector("h1");
   const description = main.querySelector(".project-description-text");
@@ -55,11 +215,15 @@ async function loadProjectInstanceTemplate() {
   const mainImage = main.querySelector("[data-project-gallery-main]");
   const metaValues = main.querySelectorAll(".project-meta-grid-2col .meta-value");
   const tagList = main.querySelector(".project-tag-list");
+  const detailsContainer = main.querySelector("[data-project-details-content]");
 
   if (kicker) kicker.textContent = config.kicker;
   if (title) title.textContent = config.title;
   if (description) description.textContent = config.description;
 
+  renderProjectDetails(detailsContainer, config);
+
+  // Set hero and gallery starter image.
   if (coverImage) {
     coverImage.src = config.images.cover;
     coverImage.alt = `${config.title} cover image`;
@@ -70,16 +234,20 @@ async function loadProjectInstanceTemplate() {
     mainImage.alt = `${config.title} gallery image 1`;
   }
 
+  // Populate thumbnail strip based on thumb_01..thumb_04 keys.
   const thumbButtons = main.querySelectorAll(".project-thumb");
   thumbButtons.forEach((button, index) => {
     const role = `thumb_0${index + 1}`;
     const imageNode = button.querySelector("img");
+    const imagePath = config.images[role];
     if (imageNode) {
-      imageNode.src = config.images[role];
+      imageNode.src = imagePath;
       imageNode.alt = `${config.title} gallery thumbnail ${index + 1}`;
     }
+    button.dataset.gallerySrc = imagePath;
   });
 
+  // Fill the 4-column metadata grid in template order.
   if (metaValues.length >= 4) {
     metaValues[0].textContent = config.tools;
     metaValues[1].textContent = config.languages;
@@ -87,6 +255,7 @@ async function loadProjectInstanceTemplate() {
     metaValues[3].textContent = config.role;
   }
 
+  // Rebuild the tag list from manifest tags.
   if (tagList) {
     tagList.innerHTML = "";
     config.tags.forEach((tag) => {
@@ -96,16 +265,22 @@ async function loadProjectInstanceTemplate() {
     });
   }
 
+  // Keep related-project card art in sync with current project assets.
   const relatedCards = main.querySelectorAll("#other-projects .card img");
   if (relatedCards[0]) relatedCards[0].src = config.images.thumb_02;
   if (relatedCards[1]) relatedCards[1].src = config.images.thumb_03;
 
+  // Expose template identity for styling/hooks/debugging.
   main.dataset.projectTemplateSlug = "template-project";
   main.dataset.projectTemplateFolder = "pt-template-project";
+  // Prevent script.js template image hydration from overriding JSON-driven image paths.
+  main.dataset.projectTemplateAutohydrate = "false";
 
+  // Replace mount content with hydrated template nodes.
   root.innerHTML = "";
   root.append(header, overlay, sidebar, main);
 
+  // Re-run shared page behavior after dynamic DOM injection.
   const script = document.createElement("script");
   script.src = "script.js";
   document.body.appendChild(script);

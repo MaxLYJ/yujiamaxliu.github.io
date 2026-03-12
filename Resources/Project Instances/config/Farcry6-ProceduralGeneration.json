@@ -1,0 +1,55 @@
+{
+  "title": "Farcry 6 Procedural Generation",
+  "kicker": "Procedural generation environment of Farcry 6",
+  "description": "My work on procedural generation tools and techniques for creating dynamic environments in Farcry 6",
+  "tools": "Dunia Engine. Houdini",
+  "languages": "Houdini Vex, Python",
+  "time": "2020-2022",
+  "role": "Technical Artist",
+  "tags": ["Dunia Engine", "Houdini", "Houdini Vex", "Python", "Technical Art"],
+  "projectDetails": {
+    "blocks": [
+      {
+        "type": "h2",
+        "text": "Farcry 6 Procedural Generation Breakdown"
+      },
+      {
+        "type": "p",
+        "text": "This project highlights the tools and techniques I used as a technical artist during the development of Farcry 6, showcasing how I leveraged Dunia Engine and Houdini capabilities to improve environment and gameplay production." 
+      },
+      {
+        "type": "h3",
+        "text": "Research Pipeline"
+      },
+      {
+        "type": "p",
+        "text": "I used Snowdrop's node-based visual scripting for rapid gameplay prototyping and wrote Python automation scripts to streamline asset management and reduce repetitive team tasks."
+      },
+      {
+        "type": "image",
+        "src": "https://placehold.co/1280x720?text=Division+2+Tools+Project+Details+Image",
+        "alt": "Division 2 tools project details placeholder image"
+      },
+      {
+        "type": "h3",
+        "text": "Feedback"
+      },
+      {
+        "type": "p",
+        "text": "Team feedback emphasized faster handoff quality and easier debugging during feature iteration, which helped increase consistency across content drops."
+      },
+      {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=VIDEO_ID_PLACEHOLDER",
+        "title": "Division 2 tools workflow placeholder video"
+      }
+    ]
+  },
+  "images": {
+    "cover": "Resources/Featured Recommendations/pages/fr-division2-tools/fr_division2-tools__main.png",
+    "thumb_01": "Resources/Featured Recommendations/pages/fr-division2-tools/fr_division2-tools__thumb_01.svg",
+    "thumb_02": "Resources/Featured Recommendations/pages/fr-division2-tools/fr_division2-tools__thumb_02.svg",
+    "thumb_03": "Resources/Featured Recommendations/pages/fr-division2-tools/fr_division2-tools__thumb_03.svg",
+    "thumb_04": "Resources/Featured Recommendations/pages/fr-division2-tools/fr_division2-tools__thumb_04.svg"
+  }
+}

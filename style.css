@@ -913,18 +913,42 @@ h2 {
   box-shadow: 0 0 0 2px rgba(120, 168, 255, 0.2);
 }
 
-.project-details-list {
+.project-details-content {
   margin-top: 0.9rem;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 0.8rem;
 }
 
-.project-details-list article {
+.project-details-block {
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 0.9rem;
   background: rgba(0, 0, 0, 0.16);
+  margin: 0;
+}
+
+.project-details-image {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.project-details-video-frame {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #000;
+}
+
+.project-details-video-frame iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  display: block;
 }
 
 @media (max-width: 980px) {

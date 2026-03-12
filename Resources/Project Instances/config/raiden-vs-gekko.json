@@ -1,0 +1,55 @@
+{
+  "title": "Raiden VS Gekko",
+  "kicker": "Unreal rigging and animation project",
+  "description": "Inspired by the Raiden vs. Gekko and Vamp fight scenes from Metal Gear Solid 4.",
+  "tools": "Unreal Engine 5, Blender",
+  "languages": "Blueprints, Python",
+  "time": "2024",
+  "role": "Rigging, Animation, Compositing",
+  "tags": ["Unreal Engine", "Blender", "Rigging", "Animation"],
+  "projectDetails": {
+    "blocks": [
+      {
+        "type": "h3",
+        "text": "Initiative"
+      },
+      {
+        "type": "p",
+        "text": "This project explores a real-time cinematic combat sequence inspired by Raiden versus Gekko, with focus on production-friendly rig controls and animation readability."
+      },
+      {
+        "type": "h3",
+        "text": "Research Pipeline"
+      },
+      {
+        "type": "p",
+        "text": "I developed the rig in Blender, imported assets into Unreal Engine 5, and iterated animation timing, pose readability, and camera rhythm using Sequencer and Control Rig."
+      },
+      {
+        "type": "h3",
+        "text": "Research Result"
+      },
+      {
+        "type": "p",
+        "text": "The final sequence improved impact timing and character silhouette clarity while reducing iteration friction through a cleaner rig-to-engine workflow."
+      },
+      {
+        "type": "image",
+        "src": "https://placehold.co/1280x720?text=Raiden+Project+Details+Image",
+        "alt": "Raiden project details placeholder image"
+      },
+      {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=VIDEO_ID_PLACEHOLDER",
+        "title": "Raiden project details placeholder video"
+      }
+    ]
+  },
+  "images": {
+    "cover": "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__main.png",
+    "thumb_01": "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__thumb_01.svg",
+    "thumb_02": "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__thumb_02.svg",
+    "thumb_03": "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__thumb_03.svg",
+    "thumb_04": "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__thumb_04.svg"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "title": "D-Walker VS Sahelanthropus",
+  "kicker": "Unreal rigging and animation project",
+  "description": "Inspired by the D-Walker vs. Sahelanthropus fight scenes from Metal Gear Solid V: The Phantom Pain.",
+  "tools": "Unreal Engine 5, Blender",
+  "languages": "Blueprints, Python",
+  "time": "2025",
+  "role": "Rigging, Animation, Compositing",
+  "tags": ["Unreal Engine", "Blender", "Rigging", "Animation"],
+  "projectDetails": {
+    "blocks": [
+      {
+        "type": "h3",
+        "text": "Initiative"
+      },
+      {
+        "type": "p",
+        "text": "Ten years ago(2015), I experienced one of the most unforgettable moments in gaming: the battle against Sahelanthropus in Metal Gear Solid V: The Phantom Pain. That rush and momentum stayed with me ever since. Over the years, I kept asking myself, \"What took you so long?\" The answer is simple: I wanted to return to this moment with the skills, experience, and knowledge I gained through a decade of work as a technical artist in the game industry.\n\nNow, on the 10th anniversary of MGSV, I am bringing that memory back to life through my own recreation, a tribute to a true video game legend.\n\nI hope you enjoy it."
+      },
+      {
+        "type": "video",
+        "url": "https://youtu.be/Go_2zuEATvg",
+        "title": "D-Walker VS Sahelanthropus video"
+      }
+    ]
+  },
+  "images": {
+    "cover": "Resources/Featured Recommendations/pages/fr-d-walker-vs-sahelanthropus/fr_d-walker-vs-sahelanthropus__main.png",
+    "thumb_01": "Resources/Featured Recommendations/pages/fr-d-walker-vs-sahelanthropus/fr_d-walker-vs-sahelanthropus__thumb_01.svg",
+    "thumb_02": "Resources/Featured Recommendations/pages/fr-d-walker-vs-sahelanthropus/fr_d-walker-vs-sahelanthropus__thumb_02.svg",
+    "thumb_03": "Resources/Featured Recommendations/pages/fr-d-walker-vs-sahelanthropus/fr_d-walker-vs-sahelanthropus__thumb_03.svg",
+    "thumb_04": "Resources/Featured Recommendations/pages/fr-d-walker-vs-sahelanthropus/fr_d-walker-vs-sahelanthropus__thumb_04.svg"
+  }
+}

@@ -22,7 +22,7 @@ const PROJECT_INDEX = [
     url: "division-2.html",
     image: "Resources/Wix/HOME _ Yujia Max Liu_files/6275d4_a7082ee4aa4f4a4790658c0bfb7d6c0af000.jpg",
     alt: "Division 2 project artwork",
-    tags: ["division2"]
+    tags: ["division2","tool"]
   },
   {
     title: "D-Walker VS Sahelanthropus",
@@ -32,11 +32,11 @@ const PROJECT_INDEX = [
     tags: ["short-film"]
   },
   {
-    title: "Shader & Material Tooling",
-    url: "d-walker-vs-sahelanthropus.html",
-    image: "Resources/Wix/HOME _ Yujia Max Liu_files/6275d4_3a7cfeefce354f47a3798ec24745223e~mv2.jpg",
+    title: "Raiden VS Gekko",
+    url: "raiden-vs-gekko.html",
+    image: "Resources/Featured Recommendations/pages/fr-raiden-vs-gekko/fr_raiden-vs-gekko__main.png",
     alt: "Tooling and shader experiments",
-    tags: ["tool"]
+    tags: ["short-film"]
   },
   {
     title: "Project Instance Test",
@@ -544,7 +544,7 @@ if (projectTemplateMain) {
     );
   }
 
-  hydrateProjectTemplateImages().then(() => {
+  function initializeProjectGallery() {
     if (!projectGallery) {
       return;
     }
@@ -612,5 +612,16 @@ if (projectTemplateMain) {
     );
 
     renderProjectGallery(activeIndex);
-  });
+  }
+
+  const shouldHydrateProjectTemplateImages =
+    projectTemplateMain.dataset.projectTemplateAutohydrate !== "false";
+
+  if (!shouldHydrateProjectTemplateImages) {
+    initializeProjectGallery();
+  } else {
+    hydrateProjectTemplateImages().then(() => {
+      initializeProjectGallery();
+    });
+  }
 }
