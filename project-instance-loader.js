@@ -7,7 +7,7 @@ const PROJECT_INSTANCE_CONFIG_PATHS = {
   "d-walker-vs-sahelanthropus": "Resources/Project Instances/config/d-walker-vs-sahelanthropus.json",
   "farcry6-procedural-generation": "Resources/Project Instances/config/Farcry6-ProceduralGeneration.json"
 };
-const TAXONOMY_MANIFEST_PATH = "data/taxonomy.json";
+const PROJECT_INSTANCE_TAXONOMY_MANIFEST_PATH = "data/taxonomy.json";
 
 let taxonomyManifestPromise;
 
@@ -35,7 +35,7 @@ async function loadTaxonomyManifest() {
 
   taxonomyManifestPromise = (async () => {
     try {
-      const response = await fetch(TAXONOMY_MANIFEST_PATH);
+      const response = await fetch(PROJECT_INSTANCE_TAXONOMY_MANIFEST_PATH);
       if (!response.ok) {
         return { projects: [], tagLabelById: new Map() };
       }
