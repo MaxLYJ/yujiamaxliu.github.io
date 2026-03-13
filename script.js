@@ -1,5 +1,8 @@
+// ===== SHARED CONSTANTS =====
 const RECOMMENDATION_SECTION_NAME = "Recommendation";
 const RECOMMENDATION_IMAGE_EXTENSION_PRIORITY = ["png", "jpg", "svg"];
+
+// ===== TAG SYSTEM DATA =====
 const TAXONOMY_MANIFEST_PATH = "data/taxonomy.json";
 
 let TAG_DEFINITIONS = [{ id: "all", label: "All" }];
@@ -40,25 +43,13 @@ async function loadTaxonomyManifest() {
   tagLabelById = new Map(TAG_DEFINITIONS.map((tag) => [tag.id, tag.label]));
 }
 
+// ===== ABOUT SECTION =====
 const yearElement = document.getElementById("year");
 if (yearElement) {
   yearElement.textContent = new Date().getFullYear();
 }
 
-document.querySelectorAll("[data-recommendation-label]").forEach((node) => {
-  node.textContent = RECOMMENDATION_SECTION_NAME;
-});
-
-const recommendationSectionElement = document.querySelector("[data-recommendation-section]");
-if (recommendationSectionElement) {
-  recommendationSectionElement.setAttribute("aria-label", RECOMMENDATION_SECTION_NAME);
-}
-
-const recommendationIndicatorElement = document.querySelector("[data-recommendation-indicator]");
-if (recommendationIndicatorElement) {
-  recommendationIndicatorElement.setAttribute("aria-label", `${RECOMMENDATION_SECTION_NAME} pages`);
-}
-
+// ===== TAG SYSTEM UI =====
 const tagBar = document.getElementById("tag-bar");
 const worksGallery = document.getElementById("works-gallery");
 const worksEmptyState = document.getElementById("works-empty");
@@ -75,10 +66,16 @@ function createTagChip(tag) {
   chip.addEventListener("click", () => {
     activeTagId = tag.id;
     renderTagSystem();
+
+    //Scroll to selected works section on both desktop and mobile after clicking a tag
+    if (worksGallery) {
+      worksGallery.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
   return chip;
 }
 
+// ===== SELECTED WORKS CARD RENDERING =====
 function createWorkCard(project) {
   const card = document.createElement("article");
   card.className = "card";
@@ -192,6 +189,21 @@ if (menuToggle && sidebar && overlay) {
       closeSidebar();
     }
   });
+}
+
+// ===== RECOMMENDATION SECTION =====
+document.querySelectorAll("[data-recommendation-label]").forEach((node) => {
+  node.textContent = RECOMMENDATION_SECTION_NAME;
+});
+
+const recommendationSectionElement = document.querySelector("[data-recommendation-section]");
+if (recommendationSectionElement) {
+  recommendationSectionElement.setAttribute("aria-label", RECOMMENDATION_SECTION_NAME);
+}
+
+const recommendationIndicatorElement = document.querySelector("[data-recommendation-indicator]");
+if (recommendationIndicatorElement) {
+  recommendationIndicatorElement.setAttribute("aria-label", `${RECOMMENDATION_SECTION_NAME} pages`);
 }
 
 const featuredPages = [
