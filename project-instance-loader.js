@@ -434,10 +434,65 @@ async function loadProjectInstanceTemplate() {
   root.innerHTML = "";
   root.append(header, overlay, sidebar, main);
 
-  // Re-run shared page behavior after dynamic DOM injection.
-  const script = document.createElement("script");
-  script.src = "script.js";
-  document.body.appendChild(script);
+  // Wire the sidebar toggle now that the injected elements are in the DOM.
+  // script.js already ran before these elements existed, so its querySelector
+  // calls returned null and no listeners were attached. We attach them here.
+  initSidebarToggle();
+}
+
+function initSidebarToggle() {
+  const menuToggle = document.querySelector(".menu-toggle");
+  const sidebarEl = document.querySelector(".sidebar");
+  const overlayEl = document.querySelector(".sidebar-overlay");
+  const mobileBreakpoint = window.matchMedia("(max-width: 980px)");
+
+  if (!menuToggle || !sidebarEl || !overlayEl) {
+    return;
+  }
+
+  function closeSidebar() {
+    sidebarEl.classList.remove("is-open");
+    overlayEl.classList.remove("is-open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("sidebar-open");
+  }
+
+  function openSidebar() {
+    sidebarEl.classList.add("is-open");
+    overlayEl.classList.add("is-open");
+    menuToggle.setAttribute("aria-expanded", "true");
+    document.body.classList.add("sidebar-open");
+  }
+
+  menuToggle.addEventListener("click", () => {
+    if (sidebarEl.classList.contains("is-open")) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  });
+
+  overlayEl.addEventListener("click", closeSidebar);
+
+  sidebarEl.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      if (mobileBreakpoint.matches) {
+        closeSidebar();
+      }
+    });
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeSidebar();
+    }
+  });
+
+  mobileBreakpoint.addEventListener("change", (event) => {
+    if (!event.matches) {
+      closeSidebar();
+    }
+  });
 }
 
 loadProjectInstanceTemplate();
