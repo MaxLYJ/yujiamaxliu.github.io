@@ -1,3 +1,8 @@
+/* ============================================================
+   DESIGN TOKENS
+   Global CSS custom properties: colors, spacing, layout sizes
+   ============================================================ */
+
 :root {
   --bg: #0f111a;
   --panel: #171a26;
@@ -11,6 +16,12 @@
   --sidebar-collapsed: 78px;
   --sidebar-expanded: 230px;
 }
+
+
+/* ============================================================
+   RESET & BASE
+   Box model reset, base html/body styles, and global defaults
+   ============================================================ */
 
 * {
   box-sizing: border-box;
@@ -38,6 +49,27 @@ a {
   color: inherit;
 }
 
+h1,
+h2,
+h3 {
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 4.1vw, 3rem);
+}
+
+h2 {
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+}
+
+
+/* ============================================================
+   TOP BAR
+   Sticky header bar at the top of every page
+   ============================================================ */
+
 .top-bar {
   position: sticky;
   top: 0;
@@ -52,6 +84,7 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
+/* Logo / site name link inside the top bar */
 .brand {
   display: inline-flex;
   align-items: center;
@@ -67,6 +100,7 @@ a {
   object-fit: contain;
 }
 
+/* Hamburger button — hidden on desktop, shown on mobile */
 .menu-toggle {
   width: 44px;
   height: 44px;
@@ -87,6 +121,13 @@ a {
   border-radius: 999px;
   background: var(--text);
 }
+
+
+/* ============================================================
+   SIDEBAR
+   Fixed left navigation panel; collapses to icon-only width,
+   expands on hover/focus to show labels
+   ============================================================ */
 
 .sidebar {
   position: fixed;
@@ -110,6 +151,7 @@ a {
   width: var(--sidebar-expanded);
 }
 
+/* Navigation links inside the sidebar */
 .sidebar a {
   text-decoration: none;
   display: flex;
@@ -126,7 +168,34 @@ a {
   color: var(--text);
 }
 
+/* Square icon badge shown at the collapsed width */
+.nav-icon {
+  min-width: 30px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
 
+/* Text label revealed when the sidebar expands */
+.nav-label {
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.sidebar:hover .nav-label,
+.sidebar:focus-within .nav-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Share block pinned to the bottom of the sidebar */
 .sidebar-share {
   margin-top: auto;
   border: 1px solid var(--line);
@@ -139,6 +208,7 @@ a {
   overflow: hidden;
 }
 
+/* Single share icon shown at collapsed width */
 .share-icon {
   display: grid;
   place-items: center;
@@ -181,6 +251,7 @@ a {
   fill: currentColor;
 }
 
+/* Swap share icon -> share links row when sidebar is open */
 .sidebar:hover .share-icon,
 .sidebar:focus-within .share-icon {
   display: none;
@@ -193,34 +264,16 @@ a {
   transform: translateX(0);
 }
 
-.nav-icon {
-  min-width: 30px;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.nav-label {
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 0.22s ease, transform 0.22s ease;
-}
-
-.sidebar:hover .nav-label,
-.sidebar:focus-within .nav-label {
-  opacity: 1;
-  transform: translateX(0);
-}
-
+/* Dark overlay that appears behind the sidebar on mobile */
 .sidebar-overlay {
   display: none;
 }
+
+
+/* ============================================================
+   PAGE LAYOUT
+   Content width and left-offset to sit beside the sidebar
+   ============================================================ */
 
 main,
 .site-footer {
@@ -228,6 +281,11 @@ main,
   margin-left: calc(var(--sidebar-collapsed) + 2.4rem);
   margin-right: auto;
 }
+
+/* ============================================================
+   FEATURED RECOMMENDATIONS
+   Carousel-style highlight panel with prev/next navigation
+   ============================================================ */
 
 .featured-recommendations {
   margin-top: 1.8rem;
@@ -241,6 +299,7 @@ main,
   gap: 0.8rem;
 }
 
+/* Main card: large image on the left, thumbnails + description on the right */
 .fr-card {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -265,6 +324,7 @@ main,
   align-content: start;
 }
 
+/* 2x2 thumbnail grid in the side column */
 .fr-thumbs {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -295,6 +355,7 @@ main,
   box-shadow: 0 0 0 2px rgba(120, 168, 255, 0.2);
 }
 
+/* Short text description below the thumbnails */
 .fr-description {
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -307,6 +368,7 @@ main,
   color: var(--muted);
 }
 
+/* Prev / Next arrow buttons flanking the card */
 .fr-nav {
   width: 44px;
   height: 100%;
@@ -324,8 +386,7 @@ main,
   border-color: var(--accent);
 }
 
-
-
+/* Dot row at the bottom indicating which slide is active */
 .fr-page-indicator {
   grid-column: 1 / -1;
   display: flex;
@@ -348,6 +409,7 @@ main,
   box-shadow: 0 0 0 3px rgba(120, 168, 255, 0.2);
 }
 
+/* Warning banner shown when recommendation data has issues */
 .featured-recommendations.has-warning {
   border-color: #f4b860;
   box-shadow: 0 0 0 2px rgba(244, 184, 96, 0.25);
@@ -368,6 +430,12 @@ main,
   padding-left: 1.1rem;
 }
 
+
+/* ============================================================
+   SECTION PANELS
+   Shared card-like panel style used by multiple sections
+   ============================================================ */
+
 .tags-system,
 .about,
 .featured-recommendations,
@@ -380,26 +448,22 @@ main,
   padding: clamp(1.1rem, 3vw, 2.2rem);
 }
 
-h1,
-h2,
-h3 {
-  margin: 0 0 0.5rem;
-  line-height: 1.2;
-}
 
-h1 {
-  font-size: clamp(1.8rem, 4.1vw, 3rem);
-}
-
-h2 {
-  font-size: clamp(1.3rem, 2.4vw, 2rem);
-}
+/* ============================================================
+   ABOUT SECTION
+   Bio / introduction panel on the home page
+   ============================================================ */
 
 .about img {
   border-radius: 14px;
   align-items: center;
-
 }
+
+
+/* ============================================================
+   TAG FILTER BAR
+   Sticky pill-button row for filtering the works gallery
+   ============================================================ */
 
 .tags-system {
   position: sticky;
@@ -414,6 +478,7 @@ h2 {
   flex-wrap: wrap;
 }
 
+/* Individual filter pill */
 .tag-chip {
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.04);
@@ -433,6 +498,11 @@ h2 {
 }
 
 
+/* ============================================================
+   WORKS GALLERY
+   2-column grid of project cards on the home page
+   ============================================================ */
+
 .gallery {
   margin-top: 1rem;
   display: grid;
@@ -440,6 +510,7 @@ h2 {
   gap: 1rem;
 }
 
+/* Individual project card */
 .card {
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -470,10 +541,17 @@ h2 {
   font-size: 0.86rem;
 }
 
+/* Message shown when no cards match the active tag filter */
 .works-empty {
   margin-top: 1rem;
   color: var(--muted);
 }
+
+
+/* ============================================================
+   SITE FOOTER
+   Centered footer with social icon links and copyright
+   ============================================================ */
 
 .site-footer {
   margin-bottom: 2rem;
@@ -486,6 +564,7 @@ h2 {
   max-width: 62ch;
 }
 
+/* Row of circular social-platform icon links */
 .social-links {
   margin-top: 1rem;
   display: flex;
@@ -519,11 +598,18 @@ h2 {
   font-size: 0.9rem;
 }
 
+/* ============================================================
+   RESPONSIVE -- <= 980px (tablet / small laptop)
+   Sidebar switches to a slide-in drawer; content takes full width
+   ============================================================ */
+
 @media (max-width: 980px) {
+  /* Show the hamburger button */
   .menu-toggle {
     display: inline-flex;
   }
 
+  /* Sidebar slides off-screen by default */
   .sidebar {
     width: min(78vw, 290px);
     transform: translateX(-100%);
@@ -536,6 +622,7 @@ h2 {
     width: min(78vw, 290px);
   }
 
+  /* Labels always visible when drawer is open */
   .sidebar .nav-label {
     opacity: 1;
     transform: none;
@@ -559,11 +646,13 @@ h2 {
     margin-bottom: calc(3rem + env(safe-area-inset-bottom, 0px));
   }
 
+  /* Slide in when .is-open is toggled by JS */
   .sidebar.is-open {
     transform: translateX(0);
     box-shadow: 14px 0 28px rgba(0, 0, 0, 0.45);
   }
 
+  /* Semi-transparent backdrop behind the open sidebar */
   .sidebar-overlay {
     display: block;
     position: fixed;
@@ -580,6 +669,7 @@ h2 {
     pointer-events: auto;
   }
 
+  /* Main content stretches edge-to-edge */
   main,
   .site-footer {
     width: min(1100px, 92vw);
@@ -587,13 +677,26 @@ h2 {
   }
 }
 
+
+/* ============================================================
+   RESPONSIVE -- <= 860px
+   Featured recommendations card switches to single column
+   ============================================================ */
+
 @media (max-width: 860px) {
   .fr-card {
     grid-template-columns: 1fr;
   }
 }
 
+
+/* ============================================================
+   RESPONSIVE -- <= 760px (large phone / small tablet)
+   Tag bar scrolls horizontally; featured carousel reflows
+   ============================================================ */
+
 @media (max-width: 760px) {
+  /* Tag bar: horizontally scrollable single row of pills */
   .tag-bar {
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -608,10 +711,12 @@ h2 {
     white-space: nowrap;
   }
 
+  /* Hide thumbnail strip in the featured carousel */
   .fr-thumbs {
     display: none;
   }
 
+  /* Featured carousel: card spans full width, nav buttons side by side below */
   .featured-recommendations {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -651,6 +756,12 @@ h2 {
   }
 }
 
+
+/* ============================================================
+   RESPONSIVE -- <= 640px (phone)
+   Brand text shrinks; works gallery becomes single column
+   ============================================================ */
+
 @media (max-width: 640px) {
   .brand span {
     font-size: 0.96rem;
@@ -664,6 +775,12 @@ h2 {
     height: 210px;
   }
 }
+
+
+/* ============================================================
+   PROJECT PAGE -- LAYOUT & PANEL
+   Outer wrapper and main content panel for individual project pages
+   ============================================================ */
 
 .project-template-main {
   width: min(1100px, 92vw);
@@ -679,6 +796,7 @@ h2 {
   padding: clamp(1.1rem, 3vw, 2.2rem);
 }
 
+/* Small all-caps accent label above the project title */
 .project-kicker {
   margin: 0 0 0.35rem;
   color: var(--accent);
@@ -688,10 +806,17 @@ h2 {
   font-size: 0.8rem;
 }
 
+/* Introductory paragraph below the project title */
 .project-lead {
   max-width: 72ch;
   color: var(--muted);
 }
+
+
+/* ============================================================
+   PROJECT PAGE -- META GRIDS (old template variant)
+   Three-column metadata grid, showcase grid, and process columns
+   ============================================================ */
 
 .project-meta-grid,
 .process-columns,
@@ -720,6 +845,7 @@ h2 {
   padding-left: 1rem;
 }
 
+/* Two-column showcase grid with image + link cards */
 .project-showcase-grid {
   margin-top: 0.9rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -742,10 +868,12 @@ h2 {
   object-fit: cover;
 }
 
+/* Three-column process / steps layout */
 .process-columns {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+/* Two-column grid linking to other projects at the bottom of a project page */
 .other-projects-grid {
   margin-top: 1rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -755,12 +883,59 @@ h2 {
   text-decoration: none;
 }
 
+
+/* ============================================================
+   RESPONSIVE -- <= 980px  (project page specific)
+   Remove sidebar offset; stack overview columns vertically
+   ============================================================ */
+
 @media (max-width: 980px) {
   .project-template-main {
-    width: min(1100px, 92vw);
+    width: 100%;
     margin: 0 auto;
   }
+
+  .project-panel {
+    padding: 1rem;
+  }
+
+  /* Stack overview columns vertically */
+  .project-overview-layout {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .project-overview-info {
+    order: 1;
+  }
+
+  .project-overview-gallery {
+    order: 2;
+    margin-top: 0.35rem;
+  }
+
+  .project-cover,
+  .project-gallery-main-frame,
+  .project-gallery-main {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Stack meta label/value pairs vertically */
+  .project-meta-grid-2col {
+    grid-template-columns: 1fr;
+  }
+
+  .project-thumb {
+    flex-basis: min(42vw, 180px);
+  }
 }
+
+
+/* ============================================================
+   RESPONSIVE -- <= 760px  (project page specific)
+   Project grids collapse to a single column
+   ============================================================ */
 
 @media (max-width: 760px) {
   .project-meta-grid,
@@ -770,6 +945,12 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+
+
+/* ============================================================
+   PROJECT PAGE -- OVERVIEW LAYOUT
+   Two-column layout: info/metadata on the left, gallery on the right
+   ============================================================ */
 
 .project-overview-layout {
   margin-top: 1rem;
@@ -789,6 +970,7 @@ h2 {
   background: rgba(0, 0, 0, 0.16);
 }
 
+/* Hero cover image at the top of the gallery column */
 .project-cover {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -797,6 +979,7 @@ h2 {
   border: 1px solid var(--line);
 }
 
+/* Stacked sections (description, roles, tools, etc.) in the info column */
 .project-detail-list {
   margin-top: 0.9rem;
   display: flex;
@@ -829,6 +1012,7 @@ h2 {
   font-size: 0.95rem;
 }
 
+/* Two-column label -> value grid for project metadata (date, role, etc.) */
 .project-meta-grid-2col {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -846,6 +1030,7 @@ h2 {
   font-weight: 600;
 }
 
+/* Pill tag list used in the info column */
 .project-tag-boxes {
   list-style: none;
   margin: 0;
@@ -864,6 +1049,12 @@ h2 {
   font-size: 0.85rem;
 }
 
+
+/* ============================================================
+   PROJECT PAGE -- IMAGE GALLERY
+   Main image viewer with a scrollable thumbnail strip below
+   ============================================================ */
+
 .project-gallery-main-frame {
   width: 100%;
   border-radius: 12px;
@@ -878,6 +1069,7 @@ h2 {
   display: block;
 }
 
+/* Horizontal scrollable row of thumbnail buttons */
 .project-gallery-track {
   --thumb-gap: 0.6rem;
   margin-top: 0.75rem;
@@ -913,12 +1105,19 @@ h2 {
   box-shadow: 0 0 0 2px rgba(120, 168, 255, 0.2);
 }
 
+
+/* ============================================================
+   PROJECT PAGE -- DETAILS CONTENT
+   Rich-text blocks, images, and embedded video in the details section
+   ============================================================ */
+
 .project-details-content {
   margin-top: 0.9rem;
   display: grid;
   gap: 0.8rem;
 }
 
+/* Generic content block (text, image, or video) */
 .project-details-block {
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -936,6 +1135,7 @@ h2 {
   display: block;
 }
 
+/* Responsive iframe wrapper for embedded video */
 .project-details-video-frame {
   width: 100%;
   border-radius: 10px;
@@ -949,43 +1149,4 @@ h2 {
   aspect-ratio: 16 / 9;
   border: 0;
   display: block;
-}
-
-@media (max-width: 980px) {
-  .project-template-main {
-    width: 100%;
-  }
-
-  .project-panel {
-    padding: 1rem;
-  }
-
-  .project-overview-layout {
-    width: 100%;
-    grid-template-columns: 1fr;
-  }
-
-  .project-overview-info {
-    order: 1;
-  }
-
-  .project-overview-gallery {
-    order: 2;
-    margin-top: 0.35rem;
-  }
-
-  .project-cover,
-  .project-gallery-main-frame,
-  .project-gallery-main {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .project-meta-grid-2col {
-    grid-template-columns: 1fr;
-  }
-
-  .project-thumb {
-    flex-basis: min(42vw, 180px);
-  }
 }
