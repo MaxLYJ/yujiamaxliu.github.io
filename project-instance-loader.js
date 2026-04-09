@@ -339,6 +339,11 @@ function initMobileOverviewStack(main) {
   }
 
   function moveToMobileStack() {
+    layout.style.gridTemplateColumns = "minmax(0, 1fr)";
+    info.style.width = "100%";
+    info.style.maxWidth = "100%";
+    gallery.style.width = "100%";
+    gallery.style.maxWidth = "100%";
     detailList.append(descriptionSection);
     detailList.append(metaSection);
     detailList.append(gallery);
@@ -348,6 +353,11 @@ function initMobileOverviewStack(main) {
   }
 
   function moveToDesktopLayout() {
+    layout.style.gridTemplateColumns = "";
+    info.style.width = "";
+    info.style.maxWidth = "";
+    gallery.style.width = "";
+    gallery.style.maxWidth = "";
     detailList.append(descriptionSection);
     detailList.append(metaSection);
     if (tagSection) {
