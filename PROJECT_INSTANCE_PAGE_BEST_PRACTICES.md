@@ -8,14 +8,14 @@ Goal: you should be able to create a new page without breaking tags, related wor
 
 ## Quick Mental Model (What lives where)
 
-When you create a project page, you usually touch **three places**:
+When you create a project page, you usually touch **two places** (plus an HTML shell):
 
 1. `Resources/Project Instances/config/<your-slug>.json`  
    Your page content (title, text, images, details, metadata).
 2. `data/taxonomy.json`  
    Global tag system + project discovery entry (used for tags and related works).
-3. `project-instance-loader.js`  
-   Registers the slug-to-config file mapping so the page can load your JSON.
+
+The loader discovers configs automatically by naming convention — no registration step needed.
 
 The HTML page itself should stay lightweight and only point to the slug.
 
@@ -27,9 +27,10 @@ The HTML page itself should stay lightweight and only point to the slug.
 
 - Use lowercase kebab-case for slug: `my-new-project`
 - Keep slug consistent everywhere:
+  - Config JSON filename must be `<your-slug>.json`
   - HTML page body `data-project-slug`
   - taxonomy `projects[].slug`
-  - loader mapping key
+- The loader resolves config paths by convention: `Resources/Project Instances/config/<slug>.json`
 
 ### Important behavior from loader
 
@@ -112,19 +113,9 @@ For new pages, use `blocks`.
 
 ---
 
-## Step 2) Register your config in `project-instance-loader.js`
+## Step 2) Add taxonomy tags and project entry
 
-In `PROJECT_INSTANCE_CONFIG_PATHS`, add your slug and config path:
-
-```js
-"my-new-project": "Resources/Project Instances/config/my-new-project.json"
-```
-
-If you skip this step, loader cannot fetch your JSON and the page will not hydrate.
-
----
-
-## Step 3) Add taxonomy tags and project entry
+> No loader registration step is needed. The config is discovered by slug convention.
 
 Open `data/taxonomy.json`.
 
@@ -172,7 +163,7 @@ If `tagIds` is wrong or missing, tags/related works will be poor or empty.
 
 ---
 
-## Step 4) Create (or verify) the instance HTML shell
+## Step 3) Create (or verify) the instance HTML shell
 
 Your instance HTML should be minimal and include:
 
@@ -184,7 +175,7 @@ Avoid copying full template markup into each page. The loader fetches `template-
 
 ---
 
-## Step 5) Fill content safely (newbie tips)
+## Step 4) Fill content safely (newbie tips)
 
 - Start with placeholders first; publish structure, then refine copy/media.
 - Keep alt text descriptive for accessibility.
@@ -194,7 +185,7 @@ Avoid copying full template markup into each page. The loader fetches `template-
 
 ---
 
-## Step 6) Validate your page
+## Step 5) Validate your page
 
 Checklist:
 
@@ -212,7 +203,7 @@ Checklist:
 ## Common Mistakes (and fixes)
 
 1. **Nothing renders**  
-   Usually missing slug mapping in `PROJECT_INSTANCE_CONFIG_PATHS`.
+   Usually a slug mismatch — config filename must exactly match the slug in `data-project-slug` and `taxonomy.json`.
 
 2. **Tags not showing**  
    `tagIds` not found in taxonomy `tags`, typo in tag id, or slug/url mismatch causing project lookup fail.
@@ -231,11 +222,10 @@ Checklist:
 ## Suggested workflow for each new project
 
 1. Copy an existing config JSON as baseline.
-2. Rename slug and file paths.
-3. Register slug in loader mapping.
-4. Add taxonomy project entry and needed tags.
-5. Verify HTML shell slug value.
-6. Test locally and fix missing assets/typos.
-7. Replace placeholders with final copy + media.
+2. Rename file to `<your-slug>.json` and update slug paths inside.
+3. Add taxonomy project entry and needed tags.
+4. Verify HTML shell slug value.
+5. Test locally and fix missing assets/typos.
+6. Replace placeholders with final copy + media.
 
 This order prevents most integration issues and is the fastest path for newcomers.

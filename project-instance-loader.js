@@ -1,21 +1,10 @@
-// Slug-to-config mapping. Each JSON file contains one project instance's content.
-const PROJECT_INSTANCE_CONFIG_PATHS = {
-  "project-instance-test":
-    "Resources/Project Instances/config/project-instance-test.json",
-  "raiden-vs-gekko": "Resources/Project Instances/config/raiden-vs-gekko.json",
-  "division2-tools": "Resources/Project Instances/config/division2-tools.json",
-  "d-walker-vs-sahelanthropus": "Resources/Project Instances/config/d-walker-vs-sahelanthropus.json",
-  "farcry6-procedural-generation": "Resources/Project Instances/config/Farcry6-ProceduralGeneration.json"
-};
+const PROJECT_INSTANCE_CONFIG_BASE = "Resources/Project Instances/config";
 const TAXONOMY_MANIFEST_PATH = "data/taxonomy.json";
 
 let taxonomyManifestPromise;
 
 async function loadProjectConfig(slug) {
-  const configPath = PROJECT_INSTANCE_CONFIG_PATHS[slug];
-  if (!configPath) {
-    return null;
-  }
+  const configPath = `${PROJECT_INSTANCE_CONFIG_BASE}/${slug}.json`;
 
   try {
     const response = await fetch(configPath);
