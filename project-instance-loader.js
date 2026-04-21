@@ -229,6 +229,43 @@ function createDetailBlockElement(block, fallbackTitle) {
     return frame;
   }
 
+  if (type === "image-compare") {
+    if (!block.before || !block.after) return null;
+    const container = document.createElement("div");
+    container.className = "project-details-image-compare";
+    container.setAttribute("data-image-compare", "");
+
+    const afterImg = document.createElement("img");
+    afterImg.className = "image-compare-after";
+    afterImg.src = block.after;
+    afterImg.alt = block.afterAlt || `${fallbackTitle} after`;
+    afterImg.loading = "lazy";
+
+    const beforeClip = document.createElement("div");
+    beforeClip.className = "image-compare-before-clip";
+
+    const beforeImg = document.createElement("img");
+    beforeImg.className = "image-compare-before";
+    beforeImg.src = block.before;
+    beforeImg.alt = block.beforeAlt || `${fallbackTitle} before`;
+    beforeImg.loading = "lazy";
+
+    beforeClip.appendChild(beforeImg);
+
+    const divider = document.createElement("div");
+    divider.className = "image-compare-divider";
+    divider.setAttribute("data-image-compare-divider", "");
+
+    const handle = document.createElement("div");
+    handle.className = "image-compare-handle";
+    handle.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 4l-4 8 4 8"/><path d="M16 4l4 8-4 8"/></svg>';
+
+    divider.appendChild(handle);
+    container.append(afterImg, beforeClip, divider);
+    return container;
+  }
+
   return null;
 }
 
@@ -553,11 +590,68 @@ async function loadProjectInstanceTemplate() {
   root.append(header, overlay, sidebar, main);
   initMobileOverviewStack(main);
   initProjectGallery(main);
+  initImageCompareSliders(main);
 
   // Wire the sidebar toggle now that the injected elements are in the DOM.
   // home.js already ran before these elements existed, so its querySelector
   // calls returned null and no listeners were attached. We attach them here.
   initSidebarToggle();
+}
+
+function initImageCompareSliders(root) {
+  const containers = root.querySelectorAll("[data-image-compare]");
+  containers.forEach((container) => {
+    const beforeClip = container.querySelector(".image-compare-before-clip");
+    const divider = container.querySelector("[data-image-compare-divider]");
+    if (!beforeClip || !divider) return;
+
+    const INITIAL_POSITION = 50;
+
+    function setPosition(percent) {
+      const clamped = Math.max(0, Math.min(100, percent));
+      beforeClip.style.width = clamped + "%";
+      divider.style.left = clamped + "%";
+    }
+
+    setPosition(INITIAL_POSITION);
+
+    function getPositionFromEvent(event) {
+      const rect = container.getBoundingClientRect();
+      const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+      return ((clientX - rect.left) / rect.width) * 100;
+    }
+
+    let dragging = false;
+
+    container.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      dragging = true;
+      setPosition(getPositionFromEvent(event));
+    });
+
+    document.addEventListener("mousemove", (event) => {
+      if (!dragging) return;
+      setPosition(getPositionFromEvent(event));
+    });
+
+    document.addEventListener("mouseup", () => {
+      dragging = false;
+    });
+
+    container.addEventListener("touchstart", (event) => {
+      dragging = true;
+      setPosition(getPositionFromEvent(event));
+    }, { passive: true });
+
+    container.addEventListener("touchmove", (event) => {
+      if (!dragging) return;
+      setPosition(getPositionFromEvent(event));
+    }, { passive: true });
+
+    container.addEventListener("touchend", () => {
+      dragging = false;
+    });
+  });
 }
 
 function initSidebarToggle() {

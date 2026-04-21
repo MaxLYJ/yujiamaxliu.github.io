@@ -38,6 +38,13 @@
         "text": "Team feedback emphasized faster handoff quality and easier debugging during feature iteration, which helped increase consistency across content drops."
       },
       {
+        "type": "image-compare",
+        "before": "https://placehold.co/1280x720/1a1a2e/eff2ff?text=Before+-+Raw+Procedural+Output",
+        "after": "https://placehold.co/1280x720/1a1a2e/eff2ff?text=After+-+Polished+Environment",
+        "beforeAlt": "Before procedural refinement",
+        "afterAlt": "After procedural refinement"
+      },
+      {
         "type": "video",
         "url": "https://www.youtube.com/watch?v=VIDEO_ID_PLACEHOLDER",
         "title": "Division 2 tools workflow placeholder video"

@@ -35,7 +35,8 @@ Hardcoded `featuredPages` array in `home.js` (~line 209). To add:
 
 ## Project Config JSON Schema
 Required fields: `title`, `kicker`, `description`, `tools`, `languages`, `time`, `role`, `images` (object with `cover`, `thumb_01`..`thumb_04`)
-Optional: `projectDetails.blocks` — array of `{type, text/src/url, alt/title}`. Block types: `h1`, `h2`, `h3`, `p`, `image`, `video`
+Optional: `projectDetails.blocks` — array of `{type, text/src/url, alt/title}`. Block types: `h1`, `h2`, `h3`, `p`, `image`, `video`, `image-compare`
+  - `image-compare` block requires: `before` (before image URL), `after` (after image URL), optional: `beforeAlt`, `afterAlt`
 Legacy: `projectDetails.initiative/pipeline/result/placeholderImage/placeholderVideo` still supported as fallback
 
 ## Styling

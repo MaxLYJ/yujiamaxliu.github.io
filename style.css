@@ -1281,3 +1281,91 @@ main,
   border: 0;
   display: block;
 }
+
+
+/* ============================================================
+   PROJECT PAGE -- IMAGE COMPARE
+   Before/after slider with draggable divider
+   ============================================================ */
+
+.project-details-image-compare {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  cursor: col-resize;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.project-details-image-compare.project-details-block {
+  padding: 0;
+  background: none;
+}
+
+.image-compare-after {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.image-compare-before-clip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  overflow: hidden;
+  width: 50%;
+}
+
+.image-compare-before {
+  width: 200%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.image-compare-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--text);
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.image-compare-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--bg);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.image-compare-handle svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 640px) {
+  .image-compare-handle {
+    width: 32px;
+    height: 32px;
+  }
+
+  .image-compare-handle svg {
+    width: 16px;
+    height: 16px;
+  }
+}
