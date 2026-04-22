@@ -262,7 +262,20 @@ function createDetailBlockElement(block, fallbackTitle) {
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 4l-4 8 4 8"/><path d="M16 4l4 8-4 8"/></svg>';
 
     divider.appendChild(handle);
-    container.append(afterImg, beforeClip, divider);
+
+    const labelRow = document.createElement("div");
+    labelRow.className = "image-compare-labels";
+
+    const beforeLabel = document.createElement("span");
+    beforeLabel.className = "image-compare-label image-compare-label-before";
+    beforeLabel.textContent = block.beforeLabel || "Before";
+
+    const afterLabel = document.createElement("span");
+    afterLabel.className = "image-compare-label image-compare-label-after";
+    afterLabel.textContent = block.afterLabel || "After";
+
+    labelRow.append(beforeLabel, afterLabel);
+    container.append(afterImg, beforeClip, divider, labelRow);
     return container;
   }
 
