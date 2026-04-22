@@ -1362,9 +1362,15 @@ main,
 }
 
 .image-compare-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0.6rem 0;
+  padding: 0.6rem;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .image-compare-label {
@@ -1372,7 +1378,8 @@ main,
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 @media (max-width: 640px) {
